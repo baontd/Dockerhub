@@ -1,0 +1,84 @@
+stages:
+  - build
+  - push
+  - deploy
+
+variables:
+  IMAGE_NAME: thmt2504/set-387-v2
+
+build:
+  stage: build
+  parallel:
+    matrix:
+      - NODE_VERSION: "22"
+  image: node:${NODE_VERSION}
+  script:
+    - npm ci
+    - npm run test || echo "No tests defined"
+    - npm run build || echo "No build script defined"
+  artifacts:
+    paths:
+      - node_modules/
+      - data/
+    expire_in: 1 hour
+  cache:
+    key: "$CI_COMMIT_REF_SLUG"
+    paths:
+      - node_modules/
+  only:
+    - main
+    - develop
+    - merge_requests
+
+push:
+  stage: push
+  image: docker:stable
+  services:
+    - docker:dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  dependencies:
+    - build
+  script:
+    - docker build -t $IMAGE_NAME:latest .
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:$CI_COMMIT_SHA
+  only:
+    - main
+    - develop
+
+deploy:
+  stage: deploy
+  tags:
+    - vps-duythuan
+  image: docker:latest
+  dependencies:
+    - push
+  script:
+    - echo "$USER_PASSWORD" | sudo -S docker pull $IMAGE_NAME:latest
+    - echo "$USER_PASSWORD" | sudo -S docker rm -f thmt2504-set-387-v2 || true
+    - echo "$USER_PASSWORD" | sudo -S docker run -d --name thmt2504-set-387-v2 -p 3099:3000 --restart unless-stopped -v /var/log/todo-app:/app/logs $IMAGE_NAME:latest
+    - echo "Application deployed successfully at http://localhost:3099"
+  environment:
+    name: production
+    url: http://localhost:3099
+  # when: manual
+  only:
+    - main
+
+# Optional: Rollback job
+# rollback:
+#   stage: deploy
+#   tags:
+#     - vps-duythuan
+#   image: docker:latest
+#   script:
+#     - echo "$USER_PASSWORD" | sudo -S docker pull $IMAGE_NAME:$CI_COMMIT_BEFORE_SHA
+#     - echo "$USER_PASSWORD" | sudo -S docker rm -f thmt2504-set-387-v2 || true
+#     - echo "$USER_PASSWORD" | sudo -S docker run -d --name thmt2504-set-387-v2 -p 3099:3000 --restart unless-stopped -v /var/log/todo-app:/app/logs $IMAGE_NAME:$CI_COMMIT_BEFORE_SHA
+#     - echo "Application rolled back successfully"
+#   # when: manual
+#   only:
+#     - main

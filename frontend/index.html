@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DODO - Simple Todo App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="todo-app">
+        <div class="todo-app__container">
+            <header class="app-header">
+                <h1 class="app-header__title">DODO3</h1>
+                <p class="app-header__subtitle">Keep track of your daily tasks</p>
+            </header>
+
+            <main class="todo-app__main">
+                <form class="todo-form" id="todoForm">
+                    <div class="todo-form__input-group">
+                        <input 
+                            type="text" 
+                            class="todo-form__input"
+                            id="todoInput" 
+                            placeholder="What needs to be done?"
+                            maxlength="100"
+                            required
+                        >
+                        <button type="submit" class="todo-form__submit-btn">
+                            <span>+</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="todo-stats">
+                    <span class="todo-stats__counter todo-stats__counter--total">Total: <span id="totalCount">0</span></span>
+                    <span class="todo-stats__counter todo-stats__counter--completed">Completed: <span id="completedCount">0</span></span>
+                    <button class="todo-stats__clear-btn" id="clearCompletedBtn">Clear Completed</button>
+                </div>
+
+                <div class="todo-filters">
+                    <button class="todo-filters__btn todo-filters__btn--active" data-filter="all">All</button>
+                    <button class="todo-filters__btn" data-filter="active">Active</button>
+                    <button class="todo-filters__btn" data-filter="completed">Completed</button>
+                </div>
+
+                <ul class="todo-list" id="todoList">
+                    <!-- Todo items will be dynamically added here -->
+                </ul>
+
+                <div class="empty-state empty-state--hidden" id="emptyState">
+                    <div class="empty-state__icon">📝</div>
+                    <p class="empty-state__text">No todos yet. Add one above!</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
