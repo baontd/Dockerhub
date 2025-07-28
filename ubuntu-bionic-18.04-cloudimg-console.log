@@ -1,0 +1,8 @@
+[ 5793.117560] INFO: rcu_sched self-detected stall on CPU
+[ 5793.117750] INFO: rcu_sched self-detected stall on CPU
+[ 5793.123024] 	0-...!: (1 ticks this GP) idle=d02/140000000000002/0 softirq=83739/83739 fqs=0 
+[ 5793.135528] 	 (t=20184 jiffies g=17569 c=17568 q=41)
+[ 5793.135574] 	1-...!: (1 ticks this GP) idle=3b6/140000000000001/0 softirq=77011/77011 fqs=0 
+[ 5793.139677] rcu_sched kthread starved for 20184 jiffies! g17569 c17568 f0x0 RCU_GP_WAIT_FQS(3) ->state=0x402 ->cpu=1
+[ 5793.147005] 	 (t=20184 jiffies g=17569 c=17568 q=41)
+[ 5793.159069] rcu_sched kthread starved for 20184 jiffies! g17569 c17568 f0x0 RCU_GP_WAIT_FQS(3) ->state=0x402 ->cpu=1
