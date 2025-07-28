@@ -1,4 +1,5 @@
 // TODO App Class - Manages all todo functionality with backend integration
+fetch("http://localhost:3000/api/todos")
 class TodoApp {
     constructor() {
         this.todos = [];
