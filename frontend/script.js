@@ -1,11 +1,10 @@
 // TODO App Class - Manages all todo functionality with backend integration
-fetch("http://backend:3000/api/todos")
 class TodoApp {
     constructor() {
         this.todos = [];
         this.currentFilter = 'all';
         this.editingId = null;
-        this.apiBaseUrl = 'http://backend:3000/api/tasks';
+        this.apiBaseUrl = 'http://localhost:3000/api/tasks';
 
         
         // DOM elements

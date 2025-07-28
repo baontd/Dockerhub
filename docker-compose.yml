@@ -1,15 +1,11 @@
-version: '2.2'
+version: '3.8'
 
 services:
   frontend:
     build: ./frontend
     ports:
-      - "8888:80"
+      - "8080:80"
     restart: always
-    depends_on:
-      - backend
-    networks:
-      - app-network
 
   backend:
     build: ./backend
@@ -18,17 +14,3 @@ services:
     restart: always
     environment:
       - NODE_ENV=production
-    networks:
-      - app-network
-
-  nginx:
-    image: nginx:latest
-    ports:
-      - "80:80"
-    restart: always
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
