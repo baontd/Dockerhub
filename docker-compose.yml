@@ -1,4 +1,3 @@
-
 services:
   frontend:
     build: ./frontend
@@ -13,7 +12,9 @@ services:
     restart: always
     environment:
       - NODE_ENV=production
+
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
+    restart: always
