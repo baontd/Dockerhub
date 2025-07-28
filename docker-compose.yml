@@ -3,12 +3,14 @@ version: '3.8'
 services:
   frontend:
     build: ./frontend
+    container_name: frontend
     ports:
       - "8888:8888"
     restart: always
 
   backend:
     build: ./backend
+    container_name: backend
     ports:
       - "3000:3000"
     restart: always
@@ -23,6 +25,7 @@ services:
     depends_on:
       - frontend
       - backend
+    container_name: nginx
 
 
 # version: '3.8'
