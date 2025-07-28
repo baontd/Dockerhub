@@ -1,5 +1,5 @@
 // TODO App Class - Manages all todo functionality with backend integration
-fetch(this.apiBaseUrl)
+fetch("/api/tasks")
 class TodoApp {
     constructor() {
         this.todos = [];
