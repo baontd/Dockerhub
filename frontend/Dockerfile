@@ -8,7 +8,7 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY . /usr/share/nginx/html
 
 # Expose port 80 để truy cập web
-EXPOSE 80
+EXPOSE 8888
 
 # Lệnh chạy nginx mặc định
 CMD ["nginx", "-g", "daemon off;"]
