@@ -1,0 +1,33 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"  # Ubuntu 20.04
+
+  config.vm.hostname = "dockerhost"
+
+  # Gán IP tĩnh để truy cập từ máy thật
+  config.vm.network "private_network", ip: "192.168.56.10"
+
+  # Chia sẻ thư mục hiện tại vào máy ảo
+  config.vm.synced_folder ".", "/home/vagrant/Dockerhub"
+
+  # Cấu hình tài nguyên máy ảo
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "docker_vm"
+    vb.memory = "2048"
+    vb.cpus = 2
+  end
+
+  # Tự động cài Docker + Docker Compose
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get update
+    sudo apt-get install -y docker.io
+    sudo usermod -aG docker vagrant
+
+    # Cài Docker Compose (bản standalone)
+    sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.2/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+
+    # Khởi động Docker
+    sudo systemctl enable docker
+    sudo systemctl start docker
+  SHELL
+end
